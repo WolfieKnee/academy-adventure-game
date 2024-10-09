@@ -603,12 +603,7 @@ func main() {
 			case "take":
 				takeItem(args, player)
 			case "drop":
-				clearScreen()
-				if len(args) > 0 {
-					player.Drop(args[0])
-				} else {
-					fmt.Println("Specify an item to drop.")
-				}
+				dropItem(args, player)
 			case "inventory":
 				clearScreen()
 				player.ShowInventory()
@@ -664,6 +659,15 @@ func main() {
 				fmt.Println("Unknown command:", command)
 			}
 		}
+	}
+}
+
+func dropItem(args []string, player Player) {
+	clearScreen()
+	if len(args) > 0 {
+		player.Drop(args[0])
+	} else {
+		fmt.Println("Specify an item to drop.")
 	}
 }
 
