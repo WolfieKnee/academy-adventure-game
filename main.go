@@ -310,6 +310,10 @@ func showCommands() {
 	fmt.Println("-exit -> quits the game\n\n-commands -> shows the commands\n\n-look -> shows the content of the room.\n\n-approach <entity> -> to approach an entity\n\n-leave -> to leave an entity\n\n-inventory -> shows items in the inventory\n\n-take <item> -> to take an item into your inventory\n\n-drop <item> -> to drop an item from your inventory and move it to the current room\n\n-use <item> -> to make use of a certain item when you approach an entity\n\n-move <direction> -> to move to a different room\n\n-map -> shows the directions you can take")
 }
 
+// DW hoisted declarations
+var isAttemptingPassword bool
+var isAttemptingTerminal bool
+
 func main() {
 	introduction := "It's the last day at the Academy, and you and your fellow graduates are ready to take on the final hack-day challenge.\nHowever, this time, it's different. Alan and Dan, your instructors, have prepared something more intense than ever before — a true test of your problem-solving and coding skills.\nThe doors to the academy are locked, the windows sealed. The only way out is to find and solve a series of riddles that lead to the terminal in a hidden room.\nThe challenge? Crack the code on the terminal to unlock the doors. But it's not that simple.\nYou'll need to gather items, approach Alan and Dan for cryptic tips, and outsmart the obstacles they've laid out for you.\nAs the tension rises, only your wits, teamwork, and knowledge can guide you to freedom.\nAre you ready to escape?\nOh and remember... You don't want to make Rosie grumpy! So don't do anything crazy.\n\nif at any point you feel lost, type 'commands' to display the list of all commands.\nThe command 'look' is always useful to get your bearings and see the options available to you.\nThe command 'exit' will make you quit the game at any time. Make sure you do mean to use it, or you will inadvertently lose all of your progress!"
 
@@ -436,9 +440,10 @@ func main() {
 	terminalRoom.Entities[terminal.Name] = &terminal
 	terminalRoom.Entities[dan.Name] = &dan
 
-	isAttemptingPassword := false
+	// DW hoisted declaration
+	isAttemptingPassword = false
 
-	isAttemptingTerminal := false
+	isAttemptingTerminal = false
 
 	IsFirstCommand := false
 
@@ -608,22 +613,7 @@ func main() {
 				clearScreen()
 				player.ShowInventory()
 			case "approach":
-				clearScreen()
-				if len(args) > 0 {
-					player.Approach(args[0])
-
-					if !unlockComputer.Triggered {
-						if player.CurrentEntity != nil && player.CurrentEntity.Name == "computer" {
-							isAttemptingPassword = true
-						}
-					}
-					if player.CurrentEntity != nil && player.CurrentEntity.Name == "terminal" {
-						isAttemptingTerminal = true
-					}
-
-				} else {
-					fmt.Println("Specify an entity to approach.")
-				}
+				approachItem(args, player, unlockComputer)
 			case "use":
 				clearScreen()
 				if len(args) > 0 {
@@ -659,6 +649,25 @@ func main() {
 				fmt.Println("Unknown command:", command)
 			}
 		}
+	}
+}
+
+func approachItem(args []string, player Player, unlockComputer *Event) {
+	clearScreen()
+	if len(args) > 0 {
+		player.Approach(args[0])
+
+		if !unlockComputer.Triggered {
+			if player.CurrentEntity != nil && player.CurrentEntity.Name == "computer" {
+				isAttemptingPassword = true
+			}
+		}
+		if player.CurrentEntity != nil && player.CurrentEntity.Name == "terminal" {
+			isAttemptingTerminal = true
+		}
+
+	} else {
+		fmt.Println("Specify an entity to approach.")
 	}
 }
 
