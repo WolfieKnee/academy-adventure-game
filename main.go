@@ -601,12 +601,7 @@ func main() {
 				clearScreen()
 				player.ShowRoom()
 			case "take":
-				clearScreen()
-				if len(args) > 0 {
-					player.Take(args[0])
-				} else {
-					fmt.Println("Specify an item to take.")
-				}
+				takeItem(args, player)
 			case "drop":
 				clearScreen()
 				if len(args) > 0 {
@@ -669,5 +664,14 @@ func main() {
 				fmt.Println("Unknown command:", command)
 			}
 		}
+	}
+}
+
+func takeItem(args []string, player Player) {
+	clearScreen()
+	if len(args) > 0 {
+		player.Take(args[0])
+	} else {
+		fmt.Println("Specify an item to take.")
 	}
 }
