@@ -615,16 +615,7 @@ func main() {
 			case "approach":
 				approachItem(args, player, unlockComputer)
 			case "use":
-				clearScreen()
-				if len(args) > 0 {
-					if player.CurrentEntity == nil {
-						player.Use(args[0], "unspecified_entity")
-					} else {
-						player.Use(args[0], player.CurrentEntity.Name)
-					}
-				} else {
-					fmt.Println("Specify an item to use.")
-				}
+				useItem(args, player)
 			case "leave":
 				clearScreen()
 				player.Leave()
@@ -649,6 +640,19 @@ func main() {
 				fmt.Println("Unknown command:", command)
 			}
 		}
+	}
+}
+
+func useItem(args []string, player Player) {
+	clearScreen()
+	if len(args) > 0 {
+		if player.CurrentEntity == nil {
+			player.Use(args[0], "unspecified_entity")
+		} else {
+			player.Use(args[0], player.CurrentEntity.Name)
+		}
+	} else {
+		fmt.Println("Specify an item to use.")
 	}
 }
 
