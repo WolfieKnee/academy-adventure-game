@@ -595,42 +595,46 @@ func main() {
 				continue
 			}
 
-			command := (parts[0])
-			args := parts[1:]
-
-			switch command {
-			case "commands":
-				clearScreen()
-				showCommands()
-			case "look":
-				clearScreen()
-				player.ShowRoom()
-			case "take":
-				takeItem(args, player)
-			case "drop":
-				dropItem(args, player)
-			case "inventory":
-				clearScreen()
-				player.ShowInventory()
-			case "approach":
-				approachItem(args, player, unlockComputer)
-			case "use":
-				useItem(args, player)
-			case "leave":
-				clearScreen()
-				player.Leave()
-			case "move":
-				movePlayer(player, args)
-			case "map":
-				clearScreen()
-				player.ShowMap()
-			case computerPassword:
-				continue
-			default:
-				clearScreen()
-				fmt.Println("Unknown command:", command)
-			}
+			doCommand(parts, player, unlockComputer, computerPassword)
 		}
+	}
+}
+
+func doCommand(parts []string, player Player, unlockComputer *Event, computerPassword string) {
+	command := (parts[0])
+	args := parts[1:]
+
+	switch command {
+	case "commands":
+		clearScreen()
+		showCommands()
+	case "look":
+		clearScreen()
+		player.ShowRoom()
+	case "take":
+		takeItem(args, player)
+	case "drop":
+		dropItem(args, player)
+	case "inventory":
+		clearScreen()
+		player.ShowInventory()
+	case "approach":
+		approachItem(args, player, unlockComputer)
+	case "use":
+		useItem(args, player)
+	case "leave":
+		clearScreen()
+		player.Leave()
+	case "move":
+		movePlayer(player, args)
+	case "map":
+		clearScreen()
+		player.ShowMap()
+	case computerPassword:
+		break
+	default:
+		clearScreen()
+		fmt.Println("Unknown command:", command)
 	}
 }
 
