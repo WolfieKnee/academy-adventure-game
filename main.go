@@ -620,16 +620,7 @@ func main() {
 				clearScreen()
 				player.Leave()
 			case "move":
-				clearScreen()
-				if _, ok := player.Inventory["lanyard"]; ok {
-					if len(args) > 0 {
-						player.Move(args[0])
-					} else {
-						fmt.Println("Specify a direction to move (e.g., north).")
-					}
-				} else {
-					fmt.Println("Doors are shut for you if you don't have a lanyard.")
-				}
+				movePlayer(player, args)
 			case "map":
 				clearScreen()
 				player.ShowMap()
@@ -640,6 +631,19 @@ func main() {
 				fmt.Println("Unknown command:", command)
 			}
 		}
+	}
+}
+
+func movePlayer(player Player, args []string) {
+	clearScreen()
+	if _, ok := player.Inventory["lanyard"]; ok {
+		if len(args) > 0 {
+			player.Move(args[0])
+		} else {
+			fmt.Println("Specify a direction to move (e.g., north).")
+		}
+	} else {
+		fmt.Println("Doors are shut for you if you don't have a lanyard.")
 	}
 }
 
