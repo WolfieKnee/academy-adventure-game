@@ -608,22 +608,7 @@ func main() {
 				clearScreen()
 				player.ShowInventory()
 			case "approach":
-				clearScreen()
-				if len(args) > 0 {
-					player.Approach(args[0])
-
-					if !unlockComputer.Triggered {
-						if player.CurrentEntity != nil && player.CurrentEntity.Name == "computer" {
-							isAttemptingPassword = true
-						}
-					}
-					if player.CurrentEntity != nil && player.CurrentEntity.Name == "terminal" {
-						isAttemptingTerminal = true
-					}
-
-				} else {
-					fmt.Println("Specify an entity to approach.")
-				}
+				approachItem(args, player, unlockComputer, isAttemptingPassword, isAttemptingTerminal)
 			case "use":
 				clearScreen()
 				if len(args) > 0 {
@@ -659,6 +644,25 @@ func main() {
 				fmt.Println("Unknown command:", command)
 			}
 		}
+	}
+}
+
+func approachItem(args []string, player Player, unlockComputer *Event, isAttemptingPassword bool, isAttemptingTerminal bool) {
+	clearScreen()
+	if len(args) > 0 {
+		player.Approach(args[0])
+
+		if !unlockComputer.Triggered {
+			if player.CurrentEntity != nil && player.CurrentEntity.Name == "computer" {
+				isAttemptingPassword = true
+			}
+		}
+		if player.CurrentEntity != nil && player.CurrentEntity.Name == "terminal" {
+			isAttemptingTerminal = true
+		}
+
+	} else {
+		fmt.Println("Specify an entity to approach.")
 	}
 }
 
